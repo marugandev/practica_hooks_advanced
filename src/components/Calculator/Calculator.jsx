@@ -1,6 +1,6 @@
 import "./Calculator.css";
 
-import React, { memo, useReducer, useRef } from "react";
+import React, { useEffect, memo, useReducer, useRef } from "react";
 import Button from "../Button/Button";
 import ShowResult from "../ShowResult/ShowResult";
 
@@ -17,6 +17,7 @@ const Calculator = memo(() => {
 
   const clearInputNumberRef = () => {
     if (inputNumberRef.current) inputNumberRef.current.value = "";
+    inputNumberRef.current.focus();
   };
 
   const getInputValue = () => {
@@ -32,11 +33,19 @@ const Calculator = memo(() => {
     return actionRef.current;
   };
 
+  const inputFocus = () => {
+    if (inputNumberRef.current) {
+      inputNumberRef.current.focus();
+    }
+  };
+
   const handleValues = (e) => {
     prevInputNumber = getInputValue();
     console.log("prevInputNumber:", prevInputNumber);
     getButtonAction(e);
   };
+
+  inputFocus();
 
   const handleResult = () => {
     let inputNumber = getInputValue();
@@ -71,7 +80,15 @@ const Calculator = memo(() => {
     actionRef.current = null;
 
     forceUpdate();
+
+    inputFocus();
   };
+
+  useEffect(() => {
+    if (inputNumberRef.current) {
+      inputNumberRef.current.focus();
+    }
+  }, []);
 
   return (
     <>
