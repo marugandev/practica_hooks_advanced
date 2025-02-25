@@ -15,9 +15,15 @@ const Calculator = memo(() => {
   const actionRef = useRef(null);
   let prevInputNumber = null;
 
+  const inputFocus = () => {
+    if (inputNumberRef.current) {
+      inputNumberRef.current.focus();
+    }
+  };
+
   const clearInputNumberRef = () => {
     if (inputNumberRef.current) inputNumberRef.current.value = "";
-    inputNumberRef.current.focus();
+    inputFocus();
   };
 
   const getInputValue = () => {
@@ -33,19 +39,11 @@ const Calculator = memo(() => {
     return actionRef.current;
   };
 
-  const inputFocus = () => {
-    if (inputNumberRef.current) {
-      inputNumberRef.current.focus();
-    }
-  };
-
   const handleValues = (e) => {
     prevInputNumber = getInputValue();
     console.log("prevInputNumber:", prevInputNumber);
     getButtonAction(e);
   };
-
-  inputFocus();
 
   const handleResult = () => {
     let inputNumber = getInputValue();
@@ -80,14 +78,11 @@ const Calculator = memo(() => {
     actionRef.current = null;
 
     forceUpdate();
-
     inputFocus();
   };
 
   useEffect(() => {
-    if (inputNumberRef.current) {
-      inputNumberRef.current.focus();
-    }
+    inputFocus();
   }, []);
 
   return (
